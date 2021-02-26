@@ -48,7 +48,11 @@ This script will overwrite any manual rule references that you may have added to
 
 ## Running the Script
 
-Run with `python3 contrast_scw.py`. It can be run more than once should changes be made, it will overwrite the rule references each time it is run.
+Run with `python3 contrast_scw.py`. It can be run more than once should changes be made to the script, it will overwrite the rule references each time it is run.
+
+## Resetting the rules
+
+Run with an additional parameter `python3 contrast_scw.py reset` to reset your Contrast rules. This will remove all the SCW links and any manual rule references that you may have added.
 
 ## Tested on
 
