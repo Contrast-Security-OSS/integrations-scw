@@ -34,7 +34,7 @@ This script requires Python3 and organizational admin privileges to run.
 Steps:
 1. Login to the Contrast TeamServer in your browser
 1. Click your name in the top right, and select 'Your Account'.
-1. Update the config.json with details about your TeamServer and credentials from the 'Your Keys' section. Please ensure the url ends in `/api/ng/`.
+1. Update the config.json with details about your TeamServer and credentials from the 'Your Keys' section.
 
 ## Recommendations
 
