@@ -21,22 +21,24 @@ class ContrastTeamServer:
     def __init__(self, teamserver_url, api_key, authorization_header, application_metadata_field_name=None):
         teamserver_url = teamserver_url.strip()
 
-        if re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com$', teamserver_url):
-            teamserver_url = teamserver_url + '/Contrast/api/ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/$', teamserver_url):
-            teamserver_url = teamserver_url + 'Contrast/api/ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast$', teamserver_url):
-            teamserver_url = teamserver_url + '/api/ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/$', teamserver_url):
-            teamserver_url = teamserver_url + 'api/ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api$', teamserver_url):
-            teamserver_url = teamserver_url + '/ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/$', teamserver_url):
-            teamserver_url = teamserver_url + 'ng/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng$', teamserver_url):
-            teamserver_url = teamserver_url + '/'
-        elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng\/$', teamserver_url) == None:
-            raise ValueError('Unrecognised TeamServer URL')
+        if re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com', teamserver_url):  
+            #This looks like a SaaS environment
+            if re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com$', teamserver_url):
+                teamserver_url = teamserver_url + '/Contrast/api/ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/$', teamserver_url):
+                teamserver_url = teamserver_url + 'Contrast/api/ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast$', teamserver_url):
+                teamserver_url = teamserver_url + '/api/ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/$', teamserver_url):
+                teamserver_url = teamserver_url + 'api/ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api$', teamserver_url):
+                teamserver_url = teamserver_url + '/ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/$', teamserver_url):
+                teamserver_url = teamserver_url + 'ng/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng$', teamserver_url):
+                teamserver_url = teamserver_url + '/'
+            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng\/$', teamserver_url) == None:
+                raise ValueError('Unrecognised SaaS TeamServer URL')
 
         self._teamserver_url = teamserver_url
         self._api_key = api_key
