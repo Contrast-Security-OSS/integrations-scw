@@ -7,38 +7,42 @@ import json
 import re
 from urllib.request import Request, urlopen
 
+
 def load_config():
     with open('config.json', 'r') as config:
         config = json.load(config)
 
     return config
 
+
 def contrast_instance_from_json(json):
     return ContrastTeamServer(json['teamserverUrl'], json['apiKey'], json['authorizationHeader'])
+
 
 class ContrastTeamServer:
 
     def __init__(self, teamserver_url, api_key, authorization_header, application_metadata_field_name=None):
         teamserver_url = teamserver_url.strip()
 
-        if re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com', teamserver_url):  
-            #This looks like a SaaS environment
-            if re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com$', teamserver_url):
+        regexBaseUrl = '^(http|https):\/\/[a-z0-9]*([.]|[:])*(contrastsecurity[.]com|[0-9]*)'
+
+        if re.match(regexBaseUrl, teamserver_url):
+            if re.match(regexBaseUrl + '$', teamserver_url):
                 teamserver_url = teamserver_url + '/Contrast/api/ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/$', teamserver_url):
                 teamserver_url = teamserver_url + 'Contrast/api/ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/Contrast$', teamserver_url):
                 teamserver_url = teamserver_url + '/api/ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/Contrast\/$', teamserver_url):
                 teamserver_url = teamserver_url + 'api/ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/Contrast\/api$', teamserver_url):
                 teamserver_url = teamserver_url + '/ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/Contrast\/api\/$', teamserver_url):
                 teamserver_url = teamserver_url + 'ng/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng$', teamserver_url):
+            elif re.match(regexBaseUrl + '\/Contrast\/api\/ng$', teamserver_url):
                 teamserver_url = teamserver_url + '/'
-            elif re.match('^https?:\/\/([a-z0-9]+[.])*contrastsecurity[.]com\/Contrast\/api\/ng\/$', teamserver_url) == None:
-                raise ValueError('Unrecognised SaaS TeamServer URL')
+            elif re.match(regexBaseUrl + '\/Contrast\/api\/ng\/$', teamserver_url) == None:
+                raise ValueError('Unrecognised TeamServer URL')
 
         self._teamserver_url = teamserver_url
         self._api_key = api_key
@@ -104,7 +108,8 @@ class ContrastTeamServer:
         if len(self._title_cwe_cache) == 0:
             policies = self.list_org_policy(org_id, api_key)
             for policy in policies:
-                self._title_cwe_cache[policy['title']] = policy['cwe'].split('/')[-1].replace('.html', '')
+                self._title_cwe_cache[policy['title']] = policy['cwe'].split(
+                    '/')[-1].replace('.html', '')
 
         return self._title_cwe_cache[title]
 
@@ -115,6 +120,7 @@ class ContrastTeamServer:
 
         data = json.dumps(values).encode("utf-8")
 
-        response = self.post_api_request(org_id + '/rules/' + rule_name, data, api_key)
+        response = self.post_api_request(
+            org_id + '/rules/' + rule_name, data, api_key)
 
         return response
