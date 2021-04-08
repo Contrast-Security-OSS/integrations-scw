@@ -2,5 +2,6 @@
     "teamserverUrl": "https://<YOUR ENVIRONMENT>.contrastsecurity.com/Contrast/api/ng/",
     "apiKey": "",
     "authorizationHeader": "",
-    "orgId": ""
+    "orgId": "",
+    "allowProductUsageAnalytics": true
 }

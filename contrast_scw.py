@@ -13,6 +13,10 @@ org_id = config['orgId']
 
 contrast = contrast_instance_from_json(config)
 
+is_reset = sys.argv and len(sys.argv) > 1 and sys.argv[1] == 'reset'
+
+allow_product_usage_analytics = config.get('allowProductUsageAnalytics', False)
+
 
 def get_scw_base_url(cwe):
     return 'https://integration-api.securecodewarrior.com/api/v1/trial?Id=contrast&MappingList=cwe&MappingKey=' + cwe
@@ -40,7 +44,7 @@ org_key = contrast.org_api_key(org_id)['api_key']
 
 # Loop through all the Assess rules
 for rule in contrast.list_org_policy(org_id, org_key):
-    if sys.argv and len(sys.argv) > 1 and sys.argv[1] == 'reset':
+    if is_reset:
         #The reset argument has been passed, erase all rule references.
         res = contrast.update_rule_references(
             org_id, rule['name'], [], org_key)
@@ -135,3 +139,7 @@ for rule in contrast.list_org_policy(org_id, org_key):
 
             if res['success'] == True:
                 print(rule['title'] + ' updated successfully')
+                
+
+if allow_product_usage_analytics:
+    contrast.send_usage_event(org_id, is_reset, org_key)
