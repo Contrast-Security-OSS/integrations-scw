@@ -62,6 +62,5 @@ Run with an additional parameter `python3 contrast_scw.py reset` to reset your C
 ## Known Issues / Limitations
 
 * The reserve rules (used when a CWE video could not be found using the API) have hardcoded SCW URLs which might change in the future.
-* The Contrast IDE plugins do not yet render clickable links.
-* The Contrast IDE plugins do not yet render html content so this markup is visible within the IDE plugin.
+* The Visual Studio and the Visual Studio for Mac plugin do not yet render clickable links and show visible markup
 * Not every rule has a SCW video available.
