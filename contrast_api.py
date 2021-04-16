@@ -124,3 +124,16 @@ class ContrastTeamServer:
             org_id + '/rules/' + rule_name, data, api_key)
 
         return response
+
+    def send_usage_event(self, org_id: str, is_reset: bool, api_key: str):
+        usage_mode_endpoint = 'undo' if is_reset else 'setup'
+
+        values = {
+            "type": usage_mode_endpoint
+        }
+
+        data = json.dumps(values).encode("utf-8")
+
+        response = self.post_api_request(org_id + '/integrations/diagnostics/scw', data)
+
+        return response
