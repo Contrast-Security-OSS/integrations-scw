@@ -101,7 +101,7 @@ for rule in contrast.list_org_policy(org_id, org_key):
                 file = reserves.get(rule['name'], '')
 
             if file != '':
-                video = '<br>Watch a video on this topic with Secure Code Warrior:<br>' + file
+                video = '<br>Watch a video on this topic with Secure Code Warrior (beta):<br>' + file
             else:
                 print('Missing video for rule: ' +
                     rule['title'] + ', cwe ' + cwe + ', SCW url: ' + scw_url)
@@ -119,7 +119,7 @@ for rule in contrast.list_org_policy(org_id, org_key):
 
                     # If this is the first language, add some chrome:
                     if len(refs) == 0:
-                        ref = '<br>Complete a training exercise on this topic for your language using Secure Code Warrior:<br><b>' + \
+                        ref = '<br>Complete a training exercise on this topic for your language using Secure Code Warrior (beta):<br><b>' + \
                             lang + '</b>: ' + training_url
                     else:
                         ref = '<b>' + lang + '</b>: ' + training_url
