@@ -65,3 +65,6 @@ Run with an additional parameter `python3 contrast_scw.py reset` to reset your C
 * The Contrast IDE plugins do not yet render clickable links.
 * The Contrast IDE plugins do not yet render html content so this markup is visible within the IDE plugin.
 * Not every rule has a SCW video available.
+
+## Terms and Conditions
+By installing this integration, you agree to the [Contrast Beta Terms and Conditions](https://docs.contrastsecurity.com/en/beta-terms-and-conditions.html).
