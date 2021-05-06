@@ -1,6 +1,6 @@
 # Secure Code Warrior Integration (beta)
 
-This script is used to provide links from within Contrast to relevant training videos and exercises within the Secure Code Warrior platform. The links appear in the "How to Fix" area of a vulnerability within the Contrast TeamServer API and IDE plugins.
+This script is used to provide links from within Contrast to relevant training videos and exercises within the Secure Code Warrior platform. The links appear in the "How to Fix" area of a vulnerability within the Contrast TeamServer UI and IDE plugins.
 
 It should not be confused with the SCW Jira plugin which is created and managed by the SCW team.
 
@@ -32,9 +32,9 @@ This script requires Python3 and organizational admin privileges to run.
 ## Setup
 
 Steps:
-1. Login to the Contrast TeamServer in your browser
-1. Click your name in the top right, and select 'Your Account'.
-1. Update the config.json with details about your TeamServer and credentials from the 'Your Keys' section. If EOP, please ensure the url ends in `/api/ng/`.
+1. Clone this repository locally. 
+1. Login to the Contrast TeamServer in your browser, click your name in the top right, and select 'User settings'.
+1. Update the [config.json](config.json) in your local cloned repository with details about your TeamServer and credentials from the 'Your Keys' section. If you have an on premise installation, please ensure the url ends in `/api/ng/`.
 
 ## Recommendations
 
