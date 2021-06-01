@@ -4,6 +4,7 @@
 from urllib.request import Request, urlopen
 from contrast_api import load_config, contrast_instance_from_json
 from contrast_api import ContrastTeamServer
+import traceback
 import json
 import urllib.parse
 import sys
@@ -16,6 +17,7 @@ contrast = contrast_instance_from_json(config)
 is_reset = sys.argv and len(sys.argv) > 1 and sys.argv[1] == 'reset'
 
 allow_product_usage_analytics = config.get('allowProductUsageAnalytics', False)
+enable_verbose_error_logging = config.get('enableVerboseErrorLogging', False)
 
 
 def get_scw_base_url(cwe):
@@ -142,4 +144,11 @@ for rule in contrast.list_org_policy(org_id, org_key):
                 
 
 if allow_product_usage_analytics:
-    contrast.send_usage_event(org_id, is_reset, org_key)
+    try:
+        contrast.send_usage_event(org_id, is_reset, org_key)
+
+    except urllib.error.HTTPError as err:
+        if enable_verbose_error_logging:
+            print(traceback.format_exc())
+        else:
+            print("Unable to send usage data")

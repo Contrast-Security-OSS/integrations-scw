@@ -3,5 +3,6 @@
     "apiKey": "",
     "authorizationHeader": "",
     "orgId": "",
-    "allowProductUsageAnalytics": true
+    "allowProductUsageAnalytics": true,
+    "enableVerboseErrorLogging": false
 }
