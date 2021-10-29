@@ -24,7 +24,7 @@ class ContrastTeamServer:
     def __init__(self, teamserver_url, api_key, authorization_header, application_metadata_field_name=None):
         teamserver_url = teamserver_url.strip()
 
-        regexBaseUrl = '^(http|https):\/\/[a-z0-9]*([.]|[:])*(contrastsecurity[.]com|[0-9]*)'
+        regexBaseUrl = '^(http|https):\/\/[a-z0-9\.]*(:)?([0-9]*)'
 
         if re.match(regexBaseUrl, teamserver_url):
             if re.match(regexBaseUrl + '$', teamserver_url):
