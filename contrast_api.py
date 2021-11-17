@@ -5,6 +5,7 @@ from collections import defaultdict
 import datetime
 import json
 import re
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 
@@ -23,26 +24,9 @@ class ContrastTeamServer:
 
     def __init__(self, teamserver_url, api_key, authorization_header, application_metadata_field_name=None):
         teamserver_url = teamserver_url.strip()
-
-        regexBaseUrl = '^(http|https):\/\/[a-z0-9\.]*(:)?([0-9]*)'
-
-        if re.match(regexBaseUrl, teamserver_url):
-            if re.match(regexBaseUrl + '$', teamserver_url):
-                teamserver_url = teamserver_url + '/Contrast/api/ng/'
-            elif re.match(regexBaseUrl + '\/$', teamserver_url):
-                teamserver_url = teamserver_url + 'Contrast/api/ng/'
-            elif re.match(regexBaseUrl + '\/Contrast$', teamserver_url):
-                teamserver_url = teamserver_url + '/api/ng/'
-            elif re.match(regexBaseUrl + '\/Contrast\/$', teamserver_url):
-                teamserver_url = teamserver_url + 'api/ng/'
-            elif re.match(regexBaseUrl + '\/Contrast\/api$', teamserver_url):
-                teamserver_url = teamserver_url + '/ng/'
-            elif re.match(regexBaseUrl + '\/Contrast\/api\/$', teamserver_url):
-                teamserver_url = teamserver_url + 'ng/'
-            elif re.match(regexBaseUrl + '\/Contrast\/api\/ng$', teamserver_url):
-                teamserver_url = teamserver_url + '/'
-            elif re.match(regexBaseUrl + '\/Contrast\/api\/ng\/$', teamserver_url) == None:
-                raise ValueError('Unrecognised TeamServer URL')
+        url_parts = urlparse(teamserver_url)
+        if url_parts.path != "/Contrast/api/ng/":
+            teamserver_url = f"{url_parts.scheme}://{url_parts.netloc}/Contrast/api/ng/"
 
         self._teamserver_url = teamserver_url
         self._api_key = api_key
