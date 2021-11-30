@@ -8,6 +8,7 @@ import traceback
 import json
 import urllib.parse
 import sys
+import ssl
 
 config = load_config()
 org_id = config['orgId']
@@ -28,7 +29,9 @@ def get_scw_data(url):
     try:
         req = Request(url)
 
-        res = urlopen(req).read()
+        context = ssl._create_unverified_context()
+        res = urlopen(req, context=context).read()
+
         data = json.loads(res.decode('utf-8'))
 
         return data
@@ -53,7 +56,7 @@ for rule in contrast.list_org_policy(org_id, org_key):
 
         if res['success'] == True:
             print(rule['title'] + ' reset successfully')
-        
+
     else:
         refs = []
         video = ''
@@ -141,7 +144,7 @@ for rule in contrast.list_org_policy(org_id, org_key):
 
             if res['success'] == True:
                 print(rule['title'] + ' updated successfully')
-                
+
 
 if allow_product_usage_analytics:
     try:
