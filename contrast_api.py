@@ -6,6 +6,7 @@ import datetime
 import json
 import re
 from urllib.request import Request, urlopen
+import ssl
 
 
 def load_config():
@@ -67,7 +68,8 @@ class ContrastTeamServer:
         req.add_header('Api-Key', api_key)
         req.add_header('Authorization', self._authorization_header)
 
-        res = urlopen(req).read()
+        context = ssl._create_unverified_context()
+        res = urlopen(req, context=context).read()
         data = json.loads(res.decode('utf-8'))
 
         return data
@@ -83,7 +85,9 @@ class ContrastTeamServer:
         req.add_header('Api-Key', api_key)
         req.add_header('Authorization', self._authorization_header)
 
-        res = urlopen(req).read()
+        context = ssl._create_unverified_context()
+        res = urlopen(req, context=context).read()
+
         data = json.loads(res.decode('utf-8'))
 
         return data
@@ -100,6 +104,8 @@ class ContrastTeamServer:
         call = org_id + '/rules?expand=skip_links'
         if expand_apps:
             call += ',app_assess_rules'
+
+        print(self.teamserver_url + call)
 
         return self.api_request(call, api_key)['rules']
 
