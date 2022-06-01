@@ -46,7 +46,7 @@ org_key = contrast.org_api_key(org_id)['api_key']
 
 # Loop through all the Assess rules
 for rule in contrast.list_org_policy(org_id, org_key):
-    print(rule['name'] + '/' + rule['title'])
+    print('Processing rule: ' + rule['name'] + '/' + rule['title'])
 
     if is_reset:
         #The reset argument has been passed, erase all rule references.
@@ -148,6 +148,8 @@ for rule in contrast.list_org_policy(org_id, org_key):
                 print(rule['name'] + '/' + rule['title'] + ' updated successfully')
         else:
             print('\n[WARNING] ' + rule['name'] + '/' + rule['title'] + ' no references added')
+
+        print("---")
 
 if allow_product_usage_analytics:
     try:
