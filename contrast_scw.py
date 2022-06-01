@@ -46,6 +46,8 @@ org_key = contrast.org_api_key(org_id)['api_key']
 
 # Loop through all the Assess rules
 for rule in contrast.list_org_policy(org_id, org_key):
+    print('Processing rule: ' + rule['name'] + '/' + rule['title'])
+
     if is_reset:
         #The reset argument has been passed, erase all rule references.
         res = contrast.update_rule_references(
@@ -99,49 +101,55 @@ for rule in contrast.list_org_policy(org_id, org_key):
             # Do we have a video, if so add it?
             if 'videos' in response and len(response['videos']) > 0:
                 file = response['videos'][0].replace(' ', '+')
+                print('Video found: ' + file)
             else:
                 file = reserves.get(rule['name'], '')
-
-            if file != '':
-                video = '<br>Watch a video on this topic with Secure Code Warrior (beta):<br>' + file
-            else:
-                print('Missing video for rule: ' +
-                    rule['title'] + ', cwe ' + cwe + ', SCW url: ' + scw_url)
-
-            # Loop through all the languages for this rule
-            for lang in rule['languages']:
-
-                # Map the contrast language to a SCW language
-                scw_lang = map_contrast_lang_to_scw_lang(lang)
-
-                if scw_lang != '':
-                    # Compose the URL for training exercise
-                    training_url = scw_url + '&LanguageKey=' + \
-                        urllib.parse.quote(lang) + '&redirect=true'
-
-                    # If this is the first language, add some chrome:
-                    if len(refs) == 0:
-                        ref = '<br>Complete a training exercise on this topic for your language using Secure Code Warrior (beta):<br><b>' + \
-                            lang + '</b>: ' + training_url
-                    else:
-                        ref = '<b>' + lang + '</b>: ' + training_url
-
-                    refs.append(ref)
         else:
-            print('No response for rule: ' +
-                rule['title'] + ', cwe ' + cwe + ', SCW url: ' + scw_url)
+            print('No CWE videos received from secure code warrior: ' +
+                rule['name'] + '/' + rule['title'] + ', cwe ' + cwe + ', SCW url: ' + scw_url)
+            file = reserves.get(rule['name'], '')
+        
+        if file != '':
+            video = '<br>Watch a video on this topic with Secure Code Warrior (beta):<br>' + file
+        else:
+            print('Missing video cwe ' + cwe + ', SCW url: ' + scw_url)
+
+        # Loop through all the languages for this rule
+        for lang in rule['languages']:
+
+            # Map the contrast language to a SCW language
+            scw_lang = map_contrast_lang_to_scw_lang(lang)
+
+            if scw_lang != '':
+                # Compose the URL for training exercise
+                training_url = scw_url + '&LanguageKey=' + \
+                    urllib.parse.quote(lang) + '&redirect=true'
+
+                # If this is the first language, add some chrome:
+                if len(refs) == 0:
+                    ref = '<br>Complete a training exercise on this topic for your language using Secure Code Warrior (beta):<br><b>' + \
+                        lang + '</b>: ' + training_url
+                else:
+                    ref = '<b>' + lang + '</b>: ' + training_url
+
+                refs.append(ref)
 
         if video != '':
             refs.insert(0, video)
 
         if len(refs) > 0:
+            print('Updating rule references: ', len(refs))
+            print(*refs,sep='\n')
             # Update the rule references in Contrast
             res = contrast.update_rule_references(
                 org_id, rule['name'], refs, org_key)
 
             if res['success'] == True:
-                print(rule['title'] + ' updated successfully')
-                
+                print(rule['name'] + '/' + rule['title'] + ' updated successfully')
+        else:
+            print('\n[WARNING] ' + rule['name'] + '/' + rule['title'] + ' no references added')
+
+        print("---")
 
 if allow_product_usage_analytics:
     try:
