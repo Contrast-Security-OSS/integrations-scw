@@ -1,8 +1,0 @@
-{
-    "teamserverUrl": "https://<YOUR ENVIRONMENT>.contrastsecurity.com/Contrast/api/ng/",
-    "apiKey": "",
-    "authorizationHeader": "",
-    "orgId": "",
-    "allowProductUsageAnalytics": true,
-    "enableVerboseErrorLogging": false
-}
