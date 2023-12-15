@@ -1,4 +1,4 @@
-# Secure Code Warrior Integration (beta)
+# Secure Code Warrior Integration
 
 This script is used to provide links from within Contrast to relevant training videos and exercises within the Secure Code Warrior platform. The links appear in the "How to Fix" area of a vulnerability within the Contrast TeamServer UI and IDE plugins.
 
